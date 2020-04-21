@@ -39,7 +39,7 @@ hour_data = data_2014%>%
   summarise(Total=n())
 datatable(hour_data)
 
-ggplot(hour_data,aes(hour,Total))+
+a=ggplot(hour_data,aes(hour,Total))+
   geom_bar(stat="identity",fill="steelblue",color="red")+
   ggtitle("Trips Every Hour")+
   theme(legend.position = "none")+
@@ -49,7 +49,35 @@ month_hour= data_2014%>%
   group_by(month,hour)%>%
   summarise(Total=n())
 
-ggplot(month_hour,aes(hour,Total,fill=month))+
+b=ggplot(month_hour,aes(hour,Total,fill=month))+
   geom_bar(stat="identity")+
   ggtitle("Trips by Hour and Month")+
   scale_y_continuous(labels=comma)
+
+day_group = data_2014%>%
+  group_by(day)%>%
+  summarise(Total=n())
+datatable(day_group)
+
+c=ggplot(day_group,aes(day,Total))+
+  geom_bar(stat = "identity",fill="steelblue")+
+  ggtitle("Trips Every Data")+
+  theme(legend.position = "none")+
+  scale_y_continuous(labels = comma)
+
+day_month_group = data_2014%>%
+  group_by(month,day)%>%
+  summarise(Total=n())
+
+d=ggplot(day_month_group,aes(day,Total,fill=month))+
+  geom_bar(stat = "identity")+
+  ggtitle("Trips by Day and Month")+
+  scale_y_continuous(labels = comma)+
+  scale_fill_manual(values = colors)
+
+d
+
+figure <- ggarrange(a, b, c, d,
+                    labels = c("A", "B", "C","D"),
+                    ncol = 2, nrow = 2)
+figure
